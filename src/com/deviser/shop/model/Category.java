@@ -3,7 +3,7 @@ package com.deviser.shop.model;
 public class Category {
 	private int id;
 	private String type;
-	private int hot;
+	private boolean hot;
 
 	public int getId() {
 		return id;
@@ -21,11 +21,11 @@ public class Category {
 		this.type = type;
 	}
 
-	public int getHot() {
+	public boolean getHot() {
 		return hot;
 	}
 
-	public void setHot(int hot) {
+	public void setHot(boolean hot) {
 		this.hot = hot;
 	}
 }

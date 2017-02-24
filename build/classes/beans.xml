@@ -15,5 +15,46 @@
 
 	<context:annotation-config></context:annotation-config>
     <bean id="date" class="java.util.Date"/>
+    
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    	<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+    	<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/shop"></property>
+    	<property name="user" value="root"></property>
+    	<property name="password" value="123"></property>
+    </bean>
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource"></property>
+    	<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+    </bean>
+    
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    
+    <tx:advice id="advice" transaction-manager="transactionManager">
+    	<tx:attributes>
+    		<tx:method name="save*" propagation="REQUIRED"/>
+    		<tx:method name="update*" propagation="REQUIRED"/>
+    		<tx:method name="delete*" propagation="REQUIRED"/>
+    		<tx:method name="*" propagation="SUPPORTS"/>
+    	</tx:attributes>
+    </tx:advice>
+    
+    <aop:config>
+    	<aop:pointcut expression="execution(* com.deviser.service.impl.*.*(..))" id="pointcut"/>
+    	<aop:advisor advice-ref="advice" pointcut-ref="pointcut"/>
+    </aop:config>
+    
+    <bean id="baseService" class="com.deviser.service.BaseService" lazy-init="true">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    
+    <bean id="categoryService" class="com.deviser.service.impl.CategoryServiceImpl" parent="baseService">    	</bean>
+    <bean id="AccountService" class="com.deviser.service.impl.AccountServiceImpl" parent="baseService"></bean>
+    
+    <bean id="categoryAction" class="com.deviser.struts2.action.CategoryAction" scope="prototype">
+    	<property name="categoryService" ref="categoryService"></property>
+    </bean>    
 
 </beans>
