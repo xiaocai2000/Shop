@@ -6,10 +6,44 @@
 	
 <struts>
 	<constant name="struts.devMode" value="true"></constant>
-	<package name="shop" extends="struts-default">
-		<action name="category_*" class="categoryAction" method="{1}">
+	<package name="shop" extends="json-default">
+	    <global-results>  
+            <result name="aindex">/WEB-INF/main/aindex.jsp</result>  
+        </global-results> 
+        <!-- class对应的是Spring中配置该Action的id值，因为要交给Spring管理 -->  
+        <action name="category_*" class="categoryAction" method="{1}">  
+            <!-- 必须要先添加json包，然后上面继承json-default -->  
+            <result name="jsonMap" type="json">  
+                <!-- 要转换成json对象的数据 -->  
+                <param name="root">pageMap</param>
+                <param name="excludeProperties">
+					rows\[\d+\]\.account\.categories,
+				</param> 
+            </result> 
+            <allowed-methods>query,queryJoinAccount</allowed-methods> 
+        </action>   
+		<!-- action name="category_*" class="categoryAction" method="{1}">
+			<result name="jsonMap" type="json">
+				<param name="root">pageMap</param>
+				<param name="excludeProperties">
+					rows\[\d+\]\.account\.pass,
+				</param>
+			</result>
 			<result name="index">/index.jsp</result>
-			<allowed-methods>update,save</allowed-methods>
+			<allowed-methods>update,save,query,queryJoinAccount</allowed-methods>
+		</action> -->
+		<action name="send_*_*" class="sendAction">
+			<result name="send">/WEB-INF/{1}/{2}.jsp</result>
+			<allowed-methods>execute</allowed-methods>
 		</action>
 	</package>
+	
+	<package name="ajax" extends="json-default">
+        <action name="ajaxRequest"
+            class="helloAction">
+            <result type="json">
+            	<param name="root">map</param>
+            </result>
+        </action>
+    </package>
 </struts>

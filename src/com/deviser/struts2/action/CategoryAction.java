@@ -1,43 +1,26 @@
 package com.deviser.struts2.action;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
-import org.apache.struts2.interceptor.ApplicationAware;
-import org.apache.struts2.interceptor.RequestAware;
-import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
-import com.deviser.service.CategoryService;
 import com.deviser.shop.model.Category;
-import com.opensymphony.xwork2.ActionSupport;
 
-public class CategoryAction extends ActionSupport implements RequestAware, SessionAware, ApplicationAware {
+import net.sf.json.JSONObject;
+
+@Controller("categoryAction")
+@Scope("prototype")
+public class CategoryAction extends BaseAction<Category> {
 	private static final long serialVersionUID = 4879436816107636372L;
-	private CategoryService categoryService;
-	private Category category;
-	private Map<String, Object> request;
-	private Map<String, Object> session;
-	private Map<String, Object> application;
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
-	public CategoryService getCategoryService() {
-		return categoryService;
-	}
-
-	public void setCategoryService(CategoryService categoryService) {
-		this.categoryService = categoryService;
-	}
 	
 	public String update() {
 		System.out.println("----update----");
 		System.out.println(categoryService);
-		categoryService.update(category);
+		categoryService.update(model);
 		return "index";
 	}
 	
@@ -59,22 +42,16 @@ public class CategoryAction extends ActionSupport implements RequestAware, Sessi
 		application.put("categoryList", categoryService.query());
 		return "index";
 	}
+	
+	public String queryJoinAccount() {
+		pageMap = new HashMap<String, Object>();
+		
+		List<Category> categoryList = categoryService.queryJoinAccount(model.getType(), page, rows);
+		Long total = categoryService.queryCount(model.getType());
 
-	@Override
-	public void setApplication(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub
-		this.application = arg0;
-	}
-
-	@Override
-	public void setSession(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub
-		this.session = arg0;
-	}
-
-	@Override
-	public void setRequest(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub
-		this.request = arg0;
+		pageMap.put("rows", categoryList);
+		pageMap.put("total", total);
+		
+		return "jsonMap";
 	}
 }

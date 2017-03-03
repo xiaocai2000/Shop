@@ -3,11 +3,17 @@ package com.deviser.service.impl;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
 import com.deviser.service.BaseService;
 
+@Service
+@Lazy(true)
 public class BaseServiceImpl<T> implements BaseService<T> {
 	private Class clazz;
 	private SessionFactory sessionFactory;
@@ -16,6 +22,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 		return sessionFactory;
 	}
 
+	@Resource
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
@@ -66,6 +73,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	public List<T> query() {
 		// TODO Auto-generated method stub
 		String hql = "from " + clazz.getSimpleName();
+		System.out.println(hql);
 		return getSession().createQuery(hql).list();
 	}
 

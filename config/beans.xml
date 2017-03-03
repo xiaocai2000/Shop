@@ -13,6 +13,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<context:component-scan base-package="com.deviser"></context:component-scan>
 	<context:annotation-config></context:annotation-config>
     <bean id="date" class="java.util.Date"/>
     
@@ -37,6 +38,7 @@
     		<tx:method name="save*" propagation="REQUIRED"/>
     		<tx:method name="update*" propagation="REQUIRED"/>
     		<tx:method name="delete*" propagation="REQUIRED"/>
+    		<tx:method name="query*" propagation="REQUIRED"/>
     		<tx:method name="*" propagation="SUPPORTS"/>
     	</tx:attributes>
     </tx:advice>
@@ -46,15 +48,21 @@
     	<aop:advisor advice-ref="advice" pointcut-ref="pointcut"/>
     </aop:config>
     
+    <!-- 
     <bean id="baseService" class="com.deviser.service.BaseService" lazy-init="true">
     	<property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
     
     <bean id="categoryService" class="com.deviser.service.impl.CategoryServiceImpl" parent="baseService">    	</bean>
-    <bean id="AccountService" class="com.deviser.service.impl.AccountServiceImpl" parent="baseService"></bean>
+    <bean id="accountService" class="com.deviser.service.impl.AccountServiceImpl" parent="baseService"></bean>
     
-    <bean id="categoryAction" class="com.deviser.struts2.action.CategoryAction" scope="prototype">
+    <bean id="baseAction" class="com.deviser.struts2.action.BaseAction" scope="prototype">
     	<property name="categoryService" ref="categoryService"></property>
-    </bean>    
+    	<property name="accountService" ref="accountService"></property>
+    </bean>
+
+    <bean id="categoryAction" class="com.deviser.struts2.action.CategoryAction" scope="prototype" parent="baseAction">    	
+    </bean>  
+     -->
 
 </beans>

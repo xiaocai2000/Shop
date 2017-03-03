@@ -78,4 +78,12 @@ public class SSHTest {
 		cg.setHot(false);
 		categoryService.update(cg);
 	}
+	
+	@Test
+	public void testQueryJoinAccount() {
+		for (Category c : categoryService.queryJoinAccount("", 2, 2)) {
+			System.out.println(c.getType());
+			System.out.println(c.getAccount());
+		}
+	}
 }
