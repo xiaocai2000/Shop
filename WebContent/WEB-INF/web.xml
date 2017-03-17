@@ -28,4 +28,8 @@
   	<filter-name>struts2</filter-name>
   	<url-pattern>*.action</url-pattern>
   </filter-mapping>
+  
+  <listener>
+  	<listener-class>com.deviser.shop.listener.InitDataListener</listener-class>
+  </listener>
 </web-app>

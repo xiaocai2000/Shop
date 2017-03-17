@@ -1,5 +1,7 @@
 package com.deviser.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.deviser.service.AccountService;

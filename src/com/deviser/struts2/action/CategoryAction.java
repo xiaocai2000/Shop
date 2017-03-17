@@ -1,5 +1,6 @@
 package com.deviser.struts2.action;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +18,13 @@ import net.sf.json.JSONObject;
 public class CategoryAction extends BaseAction<Category> {
 	private static final long serialVersionUID = 4879436816107636372L;
 	
+	
+	
+	public CategoryAction() {
+		// TODO Auto-generated constructor stub
+		System.out.println("CategoryAction");
+	}
+
 	public String update() {
 		System.out.println("----update----");
 		System.out.println(categoryService);
@@ -24,23 +32,15 @@ public class CategoryAction extends BaseAction<Category> {
 		return "index";
 	}
 	
-	public String save() {
+	public void save() {
 		System.out.println("----save----");
 		System.out.println(categoryService);
-		return "index";
+		categoryService.save(model);
 	}
 	
 	public String query() {
-        //解决方案一，采用相应的map取代原来的内置对象，这样与jsp没有依赖，但是代码量比较大  
-//     ActionContext.getContext().put("categoryList", categoryService.query()); //放到request域中  
-//     ActionContext.getContext().getSession().put("categoryList", categoryService.query()); //放到session域中  
-//     ActionContext.getContext().getApplication().put("categoryList", categoryService.query()); //放到application域中  
-         
-       //解决方案二，实现相应的接口(RequestAware,SessionAware,ApplicationAware)，让相应的map注入  
-		request.put("categoryList", categoryService.query());
-		session.put("categoryList", categoryService.query());
-		application.put("categoryList", categoryService.query());
-		return "index";
+		jsonList = categoryService.query();
+		return "jsonList";
 	}
 	
 	public String queryJoinAccount() {
@@ -53,5 +53,11 @@ public class CategoryAction extends BaseAction<Category> {
 		pageMap.put("total", total);
 		
 		return "jsonMap";
+	}
+	
+	public String deleteByIds() {
+		categoryService.deleteByIds(ids);
+		inputStream = new ByteArrayInputStream("true".getBytes());
+		return "stream";
 	}
 }

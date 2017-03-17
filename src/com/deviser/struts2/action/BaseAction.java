@@ -1,6 +1,8 @@
 package com.deviser.struts2.action;
 
+import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Controller;
 
 import com.deviser.service.AccountService;
 import com.deviser.service.CategoryService;
+import com.deviser.service.ProductService;
+import com.deviser.shop.model.FileImage;
+import com.deviser.util.FileUpload;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -27,11 +32,65 @@ public class BaseAction<T> extends ActionSupport implements RequestAware, Sessio
 	protected T model;
 	protected CategoryService categoryService;
 	protected AccountService accountService;
-	
-	// datagrid π”√£¨∑÷“≥
+	protected ProductService productService;
+	protected String ids;
+	protected InputStream inputStream;
 	protected Integer page;
 	protected Integer rows;
 	protected Map<String, Object> pageMap = null;
+	protected List<T> jsonList;
+	protected FileImage fileImage = new FileImage();
+	protected FileUpload fileUpload;
+	
+	public FileImage getFileImage() {
+		return fileImage;
+	}
+
+	public void setFileImage(FileImage fileImage) {
+		this.fileImage = fileImage;
+	}
+
+	public FileUpload getFileUpload() {
+		return fileUpload;
+	}
+
+	@Resource
+	public void setFileUpload(FileUpload fileUpload) {
+		this.fileUpload = fileUpload;
+	}
+
+	public List<T> getJsonList() {
+		return jsonList;
+	}
+
+	public void setJsonList(List<T> jsonList) {
+		this.jsonList = jsonList;
+	}
+
+	public ProductService getProductService() {
+		return productService;
+	}
+
+	@Resource
+	public void setProductService(ProductService productService) {
+		this.productService = productService;
+	}
+	
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
 
 	public Integer getPage() {
 		return page;

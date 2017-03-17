@@ -1,11 +1,15 @@
 package com.deviser.shop.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +23,7 @@ public class Category {
 	private String type;
 	private boolean hot;
 	private Account account;
+	private Set<Product> products = new HashSet<Product>(0);
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	public Account getAccount() {
@@ -53,5 +58,14 @@ public class Category {
 
 	public void setHot(boolean hot) {
 		this.hot = hot;
+	}
+
+	@OneToMany(mappedBy="category",fetch=FetchType.LAZY)
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
 	}
 }

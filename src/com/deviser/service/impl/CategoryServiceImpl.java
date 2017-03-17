@@ -2,6 +2,8 @@ package com.deviser.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.deviser.service.CategoryService;
@@ -16,18 +18,34 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category> implements Ca
         String hql = "from Category c left join fetch c.account where c.type like :type";  
         return (List<Category>)getSession().createQuery(hql)  
                 .setString("type", "%" + type + "%")  
-                .setFirstResult((page-1) * size) //从第几个开始显示  
-                .setMaxResults(size) //显示几个  
+                .setFirstResult((page-1) * size) //锟接第硷拷锟斤拷锟斤拷始锟斤拷示  
+                .setMaxResults(size) //锟斤拷示锟斤拷锟斤拷  
                 .list(); 
 	}
 
-	// 根据关键字查询总记录数
+	// 锟斤拷锟捷关硷拷锟街诧拷询锟杰硷拷录锟斤拷
 	@Override
 	public Long queryCount(String type) {
 		// TODO Auto-generated method stub
 		String hql = "select count(c) from Category c where c.type like :type";
 		return(Long) getSession().createQuery(hql)  
 	            .setString("type", "%" + type + "%")  
-	            .uniqueResult(); //返回一条记录:总记录数 
+	            .uniqueResult(); //锟斤拷锟斤拷一锟斤拷锟斤拷录:锟杰硷拷录锟斤拷 
+	}
+	
+	// 鏍规嵁ids鍒犻櫎澶氭潯璁板綍
+	public void deleteByIds(String ids) {
+		String hql = "delete from Category c where c.id in(" + ids + ")";
+		getSession().createQuery(hql).executeUpdate();
+	}
+	
+	/**
+	 * 鏍规嵁hot鏌ヨ鐑偣鎴栭潪鐑偣绫诲埆
+	 */
+	public List<Category> queryByHot(boolean hot) {
+		String hql = "from Category c where c.hot = :hot";
+		return getSession().createQuery(hql)
+				.setBoolean("hot", hot)
+				.list();
 	}
 }

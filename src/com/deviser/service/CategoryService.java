@@ -5,9 +5,16 @@ import java.util.List;
 import com.deviser.shop.model.Category;
 
 public interface CategoryService extends BaseService<Category> {
-	// ¼¶Áª¹ÜÀíÔ±²éÑ¯Àà±ğĞÅÏ¢
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	public List<Category> queryJoinAccount(String type, int page, int size);
 
-	// ¸ù¾İ¹Ø¼ü×Ö²éÑ¯×Ü¼ÇÂ¼Êı
+	// ï¿½ï¿½ï¿½İ¹Ø¼ï¿½ï¿½Ö²ï¿½Ñ¯ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
 	public Long queryCount(String type);
+	
+	// æ ¹æ®idsåˆ é™¤å¤šæ¡è®°å½•
+	public void deleteByIds(String ids);
+	/**
+	 * æ ¹æ®hotæŸ¥è¯¢çƒ­ç‚¹æˆ–éçƒ­ç‚¹ç±»åˆ«
+	 */
+	public List<Category> queryByHot(boolean hot);
 }
